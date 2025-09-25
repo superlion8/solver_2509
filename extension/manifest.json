@@ -1,0 +1,16 @@
+{
+  "manifest_version": 3,
+  "name": "Solver Assistant",
+  "description": "Highlight AI answers and instantly route them to Solver experts for validation and consulting.",
+  "version": "1.0.0",
+  "permissions": ["storage", "activeTab", "scripting", "tabs"],
+  "host_permissions": ["https://chat.openai.com/*", "https://gemini.google.com/*"],
+  "content_scripts": [
+    {
+      "matches": ["https://chat.openai.com/*", "https://gemini.google.com/*"],
+      "js": ["contentScript.js"],
+      "css": ["contentStyles.css"],
+      "run_at": "document_idle"
+    }
+  ]
+}
