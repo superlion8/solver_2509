@@ -9,11 +9,13 @@ const navLinkClassName = ({ isActive }) => (isActive ? 'active' : undefined);
 
 const Layout = ({ children }) => (
   <>
-    <header>
-      <nav>
+    <header className="site-header">
+      <nav className="site-nav" aria-label="Primary">
         <a href="#/" className="brand" aria-label="Solver home">
-          <strong>solver</strong>
+          <span className="brand-mark" aria-hidden>◆</span>
+          <span className="brand-word">solver</span>
         </a>
+
         <div className="nav-links">
           <NavLink to="/" end className={navLinkClassName}>
             Home
@@ -25,10 +27,18 @@ const Layout = ({ children }) => (
             Become an Expert
           </NavLink>
         </div>
+
+        <a className="nav-cta" href="#/chat">
+          Launch chat
+        </a>
       </nav>
     </header>
+
     <main>{children}</main>
-    <footer className="footer">© {new Date().getFullYear()} Solver. Verified answers. Actionable steps.</footer>
+
+    <footer className="footer">
+      © {new Date().getFullYear()} Solver · Verified answers. Actionable steps.
+    </footer>
   </>
 );
 

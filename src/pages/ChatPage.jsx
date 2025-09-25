@@ -3,6 +3,7 @@ import { Link, useLocation } from 'react-router-dom';
 
 const GEMINI_MODEL = 'models/gemini-2.0-pro-exp-02-05';
 const DEFAULT_API_KEY = 'AIzaSyC2PQUCIxM_iH0ZEX0I8pkLm9HcLP5NCTI';
+const STORAGE_KEY = 'solver-chat-history';
 
 const parseSearch = (search) => {
   const params = new URLSearchParams(search);
@@ -10,30 +11,18 @@ const parseSearch = (search) => {
 };
 
 const MessageActions = ({ question, answer }) => {
-  const doubleCheckParams = new URLSearchParams({
-    mode: 'double-check',
-    question,
-    answer,
-    source: 'chat',
-  });
+  const basePayload = { question, answer, source: 'chat' };
 
-  const consultancyParams = new URLSearchParams({
-    mode: 'consultancy',
-    question,
-    answer,
-    source: 'chat',
-  });
+  const doubleCheckParams = new URLSearchParams({ ...basePayload, mode: 'double-check' });
+  const consultancyParams = new URLSearchParams({ ...basePayload, mode: 'consultancy' });
 
   return (
     <div className="actions" role="group" aria-label="Escalate this answer">
       <Link className="cta" to={`/request-expert?${doubleCheckParams.toString()}`}>
-        double check the answer with an expert
+        Double check with an expert
       </Link>
-      <Link
-        className="cta secondary"
-        to={`/request-expert?${consultancyParams.toString()}`}
-      >
-        find an expert for consultancy
+      <Link className="cta ghost" to={`/request-expert?${consultancyParams.toString()}`}>
+        Find an expert for consultancy
       </Link>
     </div>
   );
@@ -42,14 +31,25 @@ const MessageActions = ({ question, answer }) => {
 const ChatPage = () => {
   const location = useLocation();
   const searchParams = useMemo(() => parseSearch(location.search), [location.search]);
-  const [messages, setMessages] = useState(() => [
-    {
-      id: crypto.randomUUID(),
-      role: 'assistant',
-      content:
-        "Hi, I'm Solver. Ask anything about GTM, analytics, or operations and I'll answer with Gemini 2.5 Pro. Tap the buttons under any answer to bring a human expert into the loop.",
-    },
-  ]);
+  const [messages, setMessages] = useState(() => {
+    try {
+      const stored = window.localStorage.getItem(STORAGE_KEY);
+      if (stored) {
+        return JSON.parse(stored);
+      }
+    } catch (error) {
+      console.warn('Failed to parse stored chat history', error);
+    }
+
+    return [
+      {
+        id: crypto.randomUUID(),
+        role: 'assistant',
+        content:
+          "I'm Solver. Ask anything about GTM, analytics, compliance, or hiring and I'll answer with Gemini 2.5 Pro. Tap the buttons below any reply to bring a human expert into the loop.",
+      },
+    ];
+  });
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -64,6 +64,14 @@ const ChatPage = () => {
   useEffect(() => {
     if (messagesEndRef.current) {
       messagesEndRef.current.scrollIntoView({ behavior: 'smooth' });
+    }
+  }, [messages]);
+
+  useEffect(() => {
+    try {
+      window.localStorage.setItem(STORAGE_KEY, JSON.stringify(messages));
+    } catch (storageError) {
+      console.warn('Unable to persist chat history', storageError);
     }
   }, [messages]);
 
@@ -146,8 +154,21 @@ const ChatPage = () => {
     }
   };
 
+  const clearConversation = () => {
+    setMessages((prev) => prev.slice(0, 1));
+    setError(null);
+  };
+
   return (
     <div className="chat">
+      <div className="chat-header">
+        <h1>Solver Chat</h1>
+        <p>Gemini 2.5 Pro handles the drafting. Verified operators keep everything accurate and actionable.</p>
+        <button type="button" className="link-button" onClick={clearConversation}>
+          Clear conversation
+        </button>
+      </div>
+
       <div className="chat-container">
         <div className="messages" aria-live="polite">
           {messages.map((message, index) => {
@@ -167,6 +188,7 @@ const ChatPage = () => {
           })}
           <div ref={messagesEndRef} />
         </div>
+
         <div className="chat-input">
           <textarea
             placeholder="Ask Solver anything..."
@@ -175,11 +197,15 @@ const ChatPage = () => {
             onKeyDown={handleKeyDown}
             aria-label="Message Solver"
           />
-          <button onClick={sendMessage} disabled={isLoading}>
-            {isLoading ? 'Thinking…' : 'Send'}
-          </button>
+          <div className="input-row">
+            <span className="input-hint">Press Enter to send, Shift + Enter for a new line.</span>
+            <button onClick={sendMessage} disabled={isLoading}>
+              {isLoading ? 'Thinking…' : 'Send'}
+            </button>
+          </div>
         </div>
       </div>
+
       {error ? (
         <p className="status-text" role="alert">
           {error}

@@ -1,21 +1,23 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 
+const EXTENSION_PATH = '/downloads/solver-extension.zip';
+
 const HomePage = () => {
-  const [extensionAvailable, setExtensionAvailable] = useState(true);
+  const [extensionReady, setExtensionReady] = useState(true);
 
   useEffect(() => {
     let cancelled = false;
 
-    fetch('/downloads/solver-extension.zip', { method: 'HEAD' })
+    fetch(EXTENSION_PATH, { method: 'HEAD' })
       .then((response) => {
         if (!cancelled) {
-          setExtensionAvailable(response.ok);
+          setExtensionReady(response.ok);
         }
       })
       .catch(() => {
         if (!cancelled) {
-          setExtensionAvailable(false);
+          setExtensionReady(false);
         }
       });
 
@@ -24,97 +26,106 @@ const HomePage = () => {
     };
   }, []);
 
-  const handleExtensionInfo = () => {
-    window.alert('Run "npm run package-extension" to generate public/downloads/solver-extension.zip before deploying.');
+  const handleMissingExtension = () => {
+    window.alert('Run "npm run package-extension" before deploying so the browser extension zip is available.');
   };
 
   return (
     <div className="home">
       <section className="hero">
-        <div>
+        <div className="hero-copy">
           <p className="eyebrow">Verified answers. Actionable steps.</p>
-          <h1>Bring AI speed and human certainty together.</h1>
-          <p>
-            Solver pairs Gemini 2.5 Pro with proven operators. Explore ideas with AI, then invite domain experts to
-            validate the output, stress-test the plan, and stay on to execute.
+          <h1>
+            Bring AI superpowers and expert certainty together inside one workspace.
+          </h1>
+          <p className="lead">
+            Solver connects Gemini 2.5 Pro with operators who have shipped GTM, analytics, compliance, and ops programs.
+            Validate responses instantly, then retain the same expert to own the follow-through.
           </p>
+
           <div className="cta-row">
             <Link className="cta" to="/chat">
               Launch Solver Chat
             </Link>
-            {extensionAvailable ? (
-              <a className="cta secondary" href="/downloads/solver-extension.zip">
-                Download Browser Extension
+
+            {extensionReady ? (
+              <a className="cta ghost" href={EXTENSION_PATH}>
+                Download browser extension
               </a>
             ) : (
-              <button className="cta secondary" type="button" onClick={handleExtensionInfo}>
-                Package Browser Extension
+              <button type="button" className="cta ghost" onClick={handleMissingExtension}>
+                Package browser extension
               </button>
             )}
           </div>
+
+          <div className="hero-metrics" role="presentation">
+            <div>
+              <strong>50+</strong>
+              <span>engagement-ready experts</span>
+            </div>
+            <div>
+              <strong>&lt;4h</strong>
+              <span>average fact check turnaround</span>
+            </div>
+            <div>
+              <strong>92%</strong>
+              <span>clients retain for deeper work</span>
+            </div>
+          </div>
         </div>
-        <div className="card">
-          <h3>How Solver works</h3>
+
+        <div className="hero-card">
+          <h3>How Solver keeps you moving</h3>
           <ol>
-            <li>Ask a question inside Solver Chat powered by Gemini 2.5 Pro.</li>
-            <li>Tap “double check with an expert” to validate facts and fill gaps.</li>
-            <li>Kick off deeper engagements with the same vetted operator.</li>
+            <li>Chat with Gemini 2.5 Pro to draft strategies, plans, and analysis.</li>
+            <li>Tap “double check with an expert” to validate or redline the output.</li>
+            <li>Spin up scoped engagements with the same expert directly from Solver.</li>
           </ol>
         </div>
       </section>
 
-      <section>
-        <h2 className="section-title">For leaders shipping real work</h2>
-        <p className="section-subtitle">
-          Solver is built for operators owning GTM, analytics, compliance, finance, and product launch programs. Every
-          answer comes with a path to accountable delivery.
-        </p>
-        <div className="card-grid">
-          <div className="card">
-            <h3>Trusted validation</h3>
-            <p>
-              Invite seasoned specialists to audit AI answers. Receive redlines, risk callouts, and citations so you can
-              act with confidence.
-            </p>
-          </div>
-          <div className="card">
-            <h3>Actionable plans</h3>
-            <p>
-              Experts transform AI drafts into workback schedules, hiring plans, or compliance playbooks without leaving
-              the workspace.
-            </p>
-          </div>
-          <div className="card">
-            <h3>Seamless everywhere</h3>
-            <p>
-              Highlight any response in ChatGPT or Gemini and the Solver extension will route it to the right expert in
-              two clicks.
-            </p>
-          </div>
-        </div>
+      <section className="value-grid">
+        <article className="value-card">
+          <h3>Accuracy that unlocks action</h3>
+          <p>
+            Every answer is paired with human oversight. Experts annotate Gemini responses with citations, risk call-outs,
+            and concrete next steps.
+          </p>
+        </article>
+        <article className="value-card">
+          <h3>Where you already work</h3>
+          <p>
+            Highlight a paragraph inside ChatGPT or Gemini and the Solver extension surfaces escalation buttons without
+            breaking your flow.
+          </p>
+        </article>
+        <article className="value-card">
+          <h3>Operators on standby</h3>
+          <p>
+            From TNS compliance to analytics hiring plans, Solver matches you with practitioners who have done the work –
+            not generic freelancers.
+          </p>
+        </article>
       </section>
 
       <section className="two-column">
         <div className="feature">
-          <strong>Stay in the loop</strong>
+          <strong>Solver Chat</strong>
           <p>
-            Continue any chat right here on the site or drop back in later – conversations persist locally so you can pick
-            up where you left off.
+            Persisted conversations, one-click export, and escalation buttons keep discovery and execution in the same
+            thread. <Link to="/chat">Jump into a chat</Link> and try it.
           </p>
         </div>
         <div className="feature">
-          <strong>Instant browser access</strong>
+          <strong>Become an expert</strong>
           <p>
-            Install the extension to surface Solver actions on top of ChatGPT or Gemini responses without breaking your
-            research flow. If the download is missing, run <code>npm run package-extension</code> to rebuild it.
+            Monetise your operator playbooks. Share your specialty, LinkedIn, and contact information to join the expert
+            roster and receive qualified leads.
           </p>
-        </div>
-        <div className="feature">
-          <strong>Join the network</strong>
-          <p>
-            Operators with deep domain expertise can{' '}
-            <Link to="/become-expert">apply here</Link> to earn from rapid fact-checks and scoped projects.
-          </p>
+          <Link className="inline-cta" to="/become-expert">
+            Sign up for Solver Expert →
+          </Link>
         </div>
       </section>
     </div>
