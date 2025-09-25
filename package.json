@@ -1,0 +1,22 @@
+{
+  "name": "solver",
+  "version": "1.0.0",
+  "description": "Solver – Verified answers. Actionable steps.",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "package-extension": "node scripts/package-extension.mjs",
+    "test": "echo 'No automated tests are configured for this project.'"
+  },
+  "dependencies": {
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "react-router-dom": "^6.26.2"
+  },
+  "devDependencies": {
+    "vite": "^5.4.10"
+  }
+}
