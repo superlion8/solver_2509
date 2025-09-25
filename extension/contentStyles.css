@@ -1,0 +1,36 @@
+.solver-extension-popover {
+  position: absolute;
+  z-index: 2147483647;
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  background: #0f172a;
+  padding: 0.75rem;
+  border-radius: 999px;
+  box-shadow: 0 12px 32px rgba(15, 23, 42, 0.25);
+}
+
+.solver-extension-button {
+  border: none;
+  border-radius: 999px;
+  padding: 0.5rem 0.9rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: opacity 0.2s ease;
+}
+
+.solver-extension-button.primary {
+  background: #1f4fff;
+  color: #fff;
+}
+
+.solver-extension-button.secondary {
+  background: #13c4a3;
+  color: #04251d;
+}
+
+.solver-extension-button:hover {
+  opacity: 0.86;
+}
