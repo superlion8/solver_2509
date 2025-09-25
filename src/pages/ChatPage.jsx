@@ -1,9 +1,14 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 
+ codex/create-react-project-for-solver-platform-s7b4z0
 const GEMINI_MODEL = 'models/gemini-2.5-pro-latest';
 const DEFAULT_API_KEY = 'AIzaSyC2PQUCIxM_iH0ZEX0I8pkLm9HcLP5NCTI';
 const STORAGE_KEY = 'solver-chat-history';
+
+const GEMINI_MODEL = 'models/gemini-2.0-pro-exp-02-05';
+const DEFAULT_API_KEY = 'AIzaSyC2PQUCIxM_iH0ZEX0I8pkLm9HcLP5NCTI';
+ main
 
 const parseSearch = (search) => {
   const params = new URLSearchParams(search);
@@ -11,18 +16,44 @@ const parseSearch = (search) => {
 };
 
 const MessageActions = ({ question, answer }) => {
+ codex/create-react-project-for-solver-platform-s7b4z0
   const basePayload = { question, answer, source: 'chat' };
 
   const doubleCheckParams = new URLSearchParams({ ...basePayload, mode: 'double-check' });
   const consultancyParams = new URLSearchParams({ ...basePayload, mode: 'consultancy' });
 
+  const doubleCheckParams = new URLSearchParams({
+    mode: 'double-check',
+    question,
+    answer,
+    source: 'chat',
+  });
+
+  const consultancyParams = new URLSearchParams({
+    mode: 'consultancy',
+    question,
+    answer,
+    source: 'chat',
+  });
+ main
+
   return (
     <div className="actions" role="group" aria-label="Escalate this answer">
       <Link className="cta" to={`/request-expert?${doubleCheckParams.toString()}`}>
+ codex/create-react-project-for-solver-platform-s7b4z0
         Double check with an expert
       </Link>
       <Link className="cta ghost" to={`/request-expert?${consultancyParams.toString()}`}>
         Find an expert for consultancy
+
+        double check the answer with an expert
+      </Link>
+      <Link
+        className="cta secondary"
+        to={`/request-expert?${consultancyParams.toString()}`}
+      >
+        find an expert for consultancy
+ main
       </Link>
     </div>
   );
@@ -31,6 +62,7 @@ const MessageActions = ({ question, answer }) => {
 const ChatPage = () => {
   const location = useLocation();
   const searchParams = useMemo(() => parseSearch(location.search), [location.search]);
+ codex/create-react-project-for-solver-platform-s7b4z0
   const [messages, setMessages] = useState(() => {
     try {
       const stored = window.localStorage.getItem(STORAGE_KEY);
@@ -50,6 +82,16 @@ const ChatPage = () => {
       },
     ];
   });
+
+  const [messages, setMessages] = useState(() => [
+    {
+      id: crypto.randomUUID(),
+      role: 'assistant',
+      content:
+        "Hi, I'm Solver. Ask anything about GTM, analytics, or operations and I'll answer with Gemini 2.5 Pro. Tap the buttons under any answer to bring a human expert into the loop.",
+    },
+  ]);
+ main
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -67,6 +109,7 @@ const ChatPage = () => {
     }
   }, [messages]);
 
+ codex/create-react-project-for-solver-platform-s7b4z0
   useEffect(() => {
     try {
       window.localStorage.setItem(STORAGE_KEY, JSON.stringify(messages));
@@ -75,6 +118,8 @@ const ChatPage = () => {
     }
   }, [messages]);
 
+
+ main
   const sendMessage = async () => {
     if (!input.trim() || isLoading) return;
 
@@ -130,9 +175,13 @@ const ChatPage = () => {
       ]);
     } catch (apiError) {
       console.error(apiError);
+ codex/create-react-project-for-solver-platform-s7b4z0
       setError(
         'We could not reach Gemini. Provide a valid key via window.GEMINI_API_KEY or a VITE_GEMINI_API_KEY environment variable and try again.'
       );
+
+      setError('We could not reach Gemini. Double-check your API key or try again later.');
+ main
       setMessages((prev) => [
         ...prev,
         {
@@ -154,6 +203,7 @@ const ChatPage = () => {
     }
   };
 
+ codex/create-react-project-for-solver-platform-s7b4z0
   const clearConversation = () => {
     setMessages((prev) => prev.slice(0, 1));
     setError(null);
@@ -169,6 +219,10 @@ const ChatPage = () => {
         </button>
       </div>
 
+
+  return (
+    <div className="chat">
+ main
       <div className="chat-container">
         <div className="messages" aria-live="polite">
           {messages.map((message, index) => {
@@ -188,7 +242,10 @@ const ChatPage = () => {
           })}
           <div ref={messagesEndRef} />
         </div>
+ codex/create-react-project-for-solver-platform-s7b4z0
 
+
+ main
         <div className="chat-input">
           <textarea
             placeholder="Ask Solver anything..."
@@ -197,6 +254,7 @@ const ChatPage = () => {
             onKeyDown={handleKeyDown}
             aria-label="Message Solver"
           />
+ codex/create-react-project-for-solver-platform-s7b4z0
           <div className="input-row">
             <span className="input-hint">Press Enter to send, Shift + Enter for a new line.</span>
             <button onClick={sendMessage} disabled={isLoading}>
@@ -206,15 +264,27 @@ const ChatPage = () => {
         </div>
       </div>
 
+
+          <button onClick={sendMessage} disabled={isLoading}>
+            {isLoading ? 'Thinking…' : 'Send'}
+          </button>
+        </div>
+      </div>
+ main
       {error ? (
         <p className="status-text" role="alert">
           {error}
         </p>
       ) : (
         <p className="status-text">
+ codex/create-react-project-for-solver-platform-s7b4z0
           Solver Chat uses Google Gemini 2.5 Pro. Set <code>window.GEMINI_API_KEY = 'your-key'</code> in the browser
           console, add <code>VITE_GEMINI_API_KEY</code> to a <code>.env</code> file locally, or configure the same variable in
           your hosting provider before redeploying.
+
+          Solver Chat uses Google Gemini 2.5 Pro. Set <code>window.GEMINI_API_KEY = 'your-key'</code> in the browser console
+          or define <code>VITE_GEMINI_API_KEY</code> in a <code>.env</code> file to override the default key.
+ main
         </p>
       )}
     </div>
