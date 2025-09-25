@@ -1,4 +1,7 @@
 node_modules/
 dist/
+codex/create-react-project-for-solver-platform-s7b4z0
+.DS_Store
 public/downloads/*.zip
 .DS_Store
+main

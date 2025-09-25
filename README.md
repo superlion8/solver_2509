@@ -13,6 +13,20 @@ npm run dev
 Vite will boot on [http://localhost:5173](http://localhost:5173) and automatically reload on changes. The app uses a
 HashRouter so the direct URLs work when hosted statically.
 
+ codex/create-react-project-for-solver-platform-s7b4z0
+### Previewing without Node.js
+
+When you only need a static preview (for example when running in a restricted environment), serve the repository root
+with any static file server:
+
+```bash
+python3 -m http.server 5173
+```
+
+Then visit [http://localhost:5173/index.html#](http://localhost:5173/index.html#) to browse the landing page, chat, and
+expert onboarding views.
+
+ main
 ### Gemini API key
 
 A demo key is bundled for convenience. In production you should provide your own key either at runtime or through
@@ -21,24 +35,46 @@ environment variables:
 - Set `window.GEMINI_API_KEY = 'your-key'` from the browser console before sending a message; or
 - Create a `.env` file with `VITE_GEMINI_API_KEY=your-key` and restart the dev server.
 
+ codex/create-react-project-for-solver-platform-s7b4z0
+When deploying to Vercel (or any static host), define the same `VITE_GEMINI_API_KEY` in the project environment
+settings and trigger a redeploy so the client bundle includes your key.
+
+## Project structure
+
+- `src/` – React views for the landing page, chat workspace, expert request flow, and expert onboarding form.
+- `public/` – Static assets served as-is, including the Solver icon. Run `npm run package-extension` to generate
+  `public/downloads/solver-extension.zip` before shipping a production build.
+
 ## Project structure
 
 - `src/` – React views for the landing page, chat workspace, expert request flow, and expert onboarding form.
 - `public/` – Static assets served as-is, including the Solver icon. Generated downloads (like the extension zip) live
   under `public/downloads/` but are not checked into git.
+ main
 - `extension/` – Source for the Chrome-compatible helper extension.
 
 ## Browser extension
 
+ codex/create-react-project-for-solver-platform-s7b4z0
+Create (or refresh) the distributable archive with:
+
 Create a fresh package with:
+ main
 
 ```bash
 npm run package-extension
 ```
 
+ codex/create-react-project-for-solver-platform-s7b4z0
+The command zips the `extension/` directory into `public/downloads/solver-extension.zip`. The archive is ignored by
+git so it won’t bloat commits or PRs—run the command locally or in CI before deploying static assets. Load that archive
+(or the folder itself) as an unpacked extension in any Chromium-based browser to surface Solver actions when
+highlighting answers in ChatGPT or Gemini. You can point the extension at a local Solver instance via:
+
 The command zips the `extension/` directory into `public/downloads/solver-extension.zip`. Load that archive (or the
 folder itself) as an unpacked extension in any Chromium-based browser to surface Solver actions when highlighting
 answers in ChatGPT or Gemini. You can point the extension at a local Solver instance via:
+ main
 
 ```js
 localStorage.setItem('solverBaseUrl', 'http://localhost:5173/');
