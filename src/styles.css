@@ -180,6 +180,60 @@ main {
   box-shadow: 0 18px 34px rgba(48, 85, 255, 0.08);
 }
 
+.cta.download {
+  background: rgba(255, 255, 255, 0.95);
+  color: var(--text);
+  border: 1px solid rgba(48, 85, 255, 0.18);
+  box-shadow: 0 26px 40px rgba(15, 23, 42, 0.08);
+  min-width: 18.5rem;
+  justify-content: flex-start;
+  padding: 0.85rem 1.3rem;
+  border-radius: 1.1rem;
+  transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+}
+
+.cta.download .cta-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 0.9rem;
+  background: linear-gradient(135deg, rgba(48, 85, 255, 0.16), rgba(93, 121, 255, 0.08));
+  font-size: 1.4rem;
+}
+
+.cta.download .cta-text {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  line-height: 1.25;
+}
+
+.cta.download .cta-title {
+  font-weight: 650;
+}
+
+.cta.download .cta-subtitle {
+  font-size: 0.78rem;
+  color: var(--muted);
+}
+
+.cta.download:hover {
+  border-color: rgba(48, 85, 255, 0.35);
+  box-shadow: 0 30px 48px rgba(15, 23, 42, 0.1);
+  transform: translateY(-4px);
+}
+
+.cta.download.outline {
+  background: rgba(255, 255, 255, 0.9);
+  border: 1px dashed rgba(48, 85, 255, 0.35);
+}
+
+.cta.download.outline .cta-icon {
+  background: linear-gradient(135deg, rgba(19, 196, 163, 0.2), rgba(48, 85, 255, 0.08));
+}
+
 .hero-metrics {
   display: grid;
   gap: 1.2rem;

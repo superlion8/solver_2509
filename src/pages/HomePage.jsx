@@ -49,12 +49,24 @@ const HomePage = () => {
             </Link>
 
             {extensionReady ? (
-              <a className="cta ghost" href={EXTENSION_PATH}>
-                Download browser extension
+              <a className="cta download" href={EXTENSION_PATH}>
+                <span className="cta-icon" aria-hidden>
+                  ↓
+                </span>
+                <span className="cta-text">
+                  <span className="cta-title">Download browser extension</span>
+                  <span className="cta-subtitle">Chrome &amp; Edge · packaged zip</span>
+                </span>
               </a>
             ) : (
-              <button type="button" className="cta ghost" onClick={handleMissingExtension}>
-                Package browser extension
+              <button type="button" className="cta download outline" onClick={handleMissingExtension}>
+                <span className="cta-icon" aria-hidden>
+                  ⚙
+                </span>
+                <span className="cta-text">
+                  <span className="cta-title">Package browser extension</span>
+                  <span className="cta-subtitle">Run npm run package-extension</span>
+                </span>
               </button>
             )}
           </div>

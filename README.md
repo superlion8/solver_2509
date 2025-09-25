@@ -13,6 +13,18 @@ npm run dev
 Vite will boot on [http://localhost:5173](http://localhost:5173) and automatically reload on changes. The app uses a
 HashRouter so the direct URLs work when hosted statically.
 
+### Previewing without Node.js
+
+When you only need a static preview (for example when running in a restricted environment), serve the repository root
+with any static file server:
+
+```bash
+python3 -m http.server 5173
+```
+
+Then visit [http://localhost:5173/index.html#](http://localhost:5173/index.html#) to browse the landing page, chat, and
+expert onboarding views.
+
 ### Gemini API key
 
 A demo key is bundled for convenience. In production you should provide your own key either at runtime or through

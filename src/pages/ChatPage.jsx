@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 
-const GEMINI_MODEL = 'models/gemini-2.0-pro-exp-02-05';
+const GEMINI_MODEL = 'models/gemini-2.5-pro-latest';
 const DEFAULT_API_KEY = 'AIzaSyC2PQUCIxM_iH0ZEX0I8pkLm9HcLP5NCTI';
 const STORAGE_KEY = 'solver-chat-history';
 
